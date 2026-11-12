@@ -1,0 +1,918 @@
+<title>Mandarin Wiki</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* Layout: sidebar nav + scrollable content, collapsing to stacked on mobile */
+  :root {
+    --bg: #fafaf9;
+    --fg: #1c1917;
+    --fg-muted: #78716c;
+    --surface: #ffffff;
+    --border: #e7e5e4;
+    --accent: #0e7490;
+    --accent-light: #ecfeff;
+    --code-bg: #f5f5f4;
+    --nav-bg: #f5f5f4;
+    --nav-active: #0e7490;
+    --badge-bg: #dbeafe;
+    --badge-fg: #1e40af;
+    --badge-green-bg: #dcfce7;
+    --badge-green-fg: #166534;
+    --badge-amber-bg: #fef3c7;
+    --badge-amber-fg: #92400e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0a09;
+      --fg: #e7e5e4;
+      --fg-muted: #a8a29e;
+      --surface: #1c1917;
+      --border: #292524;
+      --accent: #22d3ee;
+      --accent-light: #0c2a30;
+      --code-bg: #1c1917;
+      --nav-bg: #1c1917;
+      --nav-active: #22d3ee;
+      --badge-bg: #1e3a5f;
+      --badge-fg: #93c5fd;
+      --badge-green-bg: #14532d;
+      --badge-green-fg: #86efac;
+      --badge-amber-bg: #451a03;
+      --badge-amber-fg: #fcd34d;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0a09;
+    --fg: #e7e5e4;
+    --fg-muted: #a8a29e;
+    --surface: #1c1917;
+    --border: #292524;
+    --accent: #22d3ee;
+    --accent-light: #0c2a30;
+    --code-bg: #1c1917;
+    --nav-bg: #1c1917;
+    --nav-active: #22d3ee;
+    --badge-bg: #1e3a5f;
+    --badge-fg: #93c5fd;
+    --badge-green-bg: #14532d;
+    --badge-green-fg: #86efac;
+    --badge-amber-bg: #451a03;
+    --badge-amber-fg: #fcd34d;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
+
+  .layout {
+    display: flex;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    width: 240px;
+    min-width: 240px;
+    height: calc(100vh - env(safe-area-inset-top, 0px));
+    overflow-y: auto;
+    background: var(--nav-bg);
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  nav .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav .logo small {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  nav .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-top: 16px;
+    margin-bottom: 4px;
+    padding-left: 8px;
+  }
+
+  nav a {
+    display: block;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  nav a:hover, nav a.active {
+    background: var(--accent-light);
+    color: var(--nav-active);
+  }
+
+  main {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 40px;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 24px 0 8px;
+  }
+
+  .subtitle {
+    color: var(--fg-muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  section {
+    margin-bottom: 16px;
+  }
+
+  section[id] {
+    scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 16px);
+  }
+
+  p { margin: 0 0 12px; font-size: 14px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+    letter-spacing: 0.02em;
+  }
+  .badge.green { background: var(--badge-green-bg); color: var(--badge-green-fg); }
+  .badge.amber { background: var(--badge-amber-bg); color: var(--badge-amber-fg); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 8px 0 16px;
+  }
+
+  th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .table-wrap table { margin: 0; }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 8px 0 16px;
+  }
+
+  .file-tree {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 8px 0 16px;
+  }
+
+  .file-tree .dir { color: var(--accent); font-weight: 600; }
+  .file-tree .comment { color: var(--fg-muted); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 12px 0 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .card h3 { margin: 0 0 6px; font-size: 14px; }
+  .card p { color: var(--fg-muted); margin: 0; font-size: 13px; }
+
+  .link-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .link-list li {
+    font-size: 13px;
+  }
+
+  .link-list a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .link-list a:hover {
+    text-decoration: underline;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 16px;
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: max(20px, env(safe-area-inset-right, 0px));
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      width: 100%;
+      min-width: 0;
+      height: 100vh;
+      z-index: 99;
+      transform: translateY(-100%);
+      transition: transform 0.25s ease;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    nav.open { transform: translateY(0); }
+    .mobile-nav-toggle { display: flex; }
+    main { padding: 24px 0; }
+  }
+</style>
+
+<button class="mobile-nav-toggle" onclick="document.querySelector('nav').classList.toggle('open')" aria-label="Menu">☰</button>
+
+<div class="layout">
+  <nav id="sidebar">
+    <div class="logo">
+      lunes-node
+      <small>Mandarin / Full Node</small>
+    </div>
+
+    <div class="section-label">Overview</div>
+    <a href="#overview">Visao Geral</a>
+    <a href="#stack">Stack & Dependencias</a>
+    <a href="#structure">Estrutura de Diretorios</a>
+
+    <div class="section-label">Arquitetura</div>
+    <a href="#entrypoint">Entrypoint</a>
+    <a href="#network">Rede P2P</a>
+    <a href="#consensus">Consenso (NXT PoS)</a>
+    <a href="#transactions">Transacoes</a>
+    <a href="#state">State & Storage</a>
+    <a href="#mining">Mineracao</a>
+    <a href="#security">Seguranca</a>
+
+    <div class="section-label">API</div>
+    <a href="#rest-api">REST API</a>
+    <a href="#api-routes">Rotas Disponiveis</a>
+
+    <div class="section-label">Configuracao</div>
+    <a href="#config">Configuracao</a>
+    <a href="#networks">Mainnet vs Testnet</a>
+    <a href="#fees">Tabela de Fees</a>
+
+    <div class="section-label">Infra</div>
+    <a href="#docker">Docker</a>
+    <a href="#ci">CI/CD</a>
+    <a href="#metrics">Metricas</a>
+
+    <div class="section-label">Desenvolvimento</div>
+    <a href="#build">Build & Run</a>
+    <a href="#tests">Testes</a>
+    <a href="#contributing">Contribuicao</a>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h1>Lunes Node &mdash; Mandarin</h1>
+      <p class="subtitle">Full Node da blockchain Lunes. Conecta, armazena, valida e propaga blocos da rede.</p>
+
+      <div class="tag-row">
+        <span class="badge">Scala 2.12</span>
+        <span class="badge">sbt</span>
+        <span class="badge green">v0.0.10</span>
+        <span class="badge amber">Apache 2.0</span>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Organizacao</h3>
+          <p><code>io.lunes</code> &mdash; dominio Lunes. Framework base herdado do <code>scorex</code>.</p>
+        </div>
+        <div class="card">
+          <h3>Coin</h3>
+          <p>Nome: <strong>LUNES</strong> (LNS)<br>Supply inicial: <code>15.072.853.761.500.800</code> units</p>
+        </div>
+        <div class="card">
+          <h3>Consenso</h3>
+          <p>NXT-like Proof of Stake com suporte a microblocks (NG protocol)</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack">
+      <h2>Stack & Dependencias</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Categoria</th><th>Biblioteca</th><th>Versao</th></tr></thead>
+          <tbody>
+            <tr><td>Runtime</td><td>Akka (actor, slf4j)</td><td>2.4.19</td></tr>
+            <tr><td>HTTP</td><td>Akka HTTP + Swagger</td><td>10.0.9 / 1.5.16</td></tr>
+            <tr><td>Networking</td><td>Netty</td><td>4.1.22</td></tr>
+            <tr><td>Storage</td><td>LevelDB (leveldbjni)</td><td>1.8</td></tr>
+            <tr><td>Serialization</td><td>Play JSON, Guava</td><td>2.6.2 / 21.0</td></tr>
+            <tr><td>Crypto</td><td>Scorex Scrypto</td><td>2.0.4</td></tr>
+            <tr><td>Reactive</td><td>Monix</td><td>3.0.0-M3</td></tr>
+            <tr><td>FP</td><td>Cats</td><td>1.0.1</td></tr>
+            <tr><td>Config</td><td>Ficus (Typesafe Config)</td><td>1.4.2</td></tr>
+            <tr><td>Metrics</td><td>Kamon + InfluxDB</td><td>0.6.7 / 2.7</td></tr>
+            <tr><td>Logging</td><td>Logback + SLF4J</td><td>1.2.3 / 1.7.25</td></tr>
+            <tr><td>Test</td><td>ScalaTest</td><td>3.2.11</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="structure">
+      <h2>Estrutura de Diretorios</h2>
+      <div class="file-tree">
+<span class="dir">mandarin/</span>
+├── <span class="dir">src/main/scala/</span>
+│   ├── <span class="dir">io/lunes/</span>
+│   │   ├── LunesNode.scala         <span class="comment">← entrypoint</span>
+│   │   ├── <span class="dir">network/</span>              <span class="comment">← P2P, handshake, sync</span>
+│   │   ├── <span class="dir">transaction/</span>          <span class="comment">← tipos de TX</span>
+│   │   ├── <span class="dir">state2/</span>               <span class="comment">← state, diffs, appenders</span>
+│   │   ├── <span class="dir">mining/</span>               <span class="comment">← miner, constraints</span>
+│   │   ├── <span class="dir">settings/</span>             <span class="comment">← configs, constants</span>
+│   │   ├── <span class="dir">security/</span>             <span class="comment">← ban list, frozen assets</span>
+│   │   ├── <span class="dir">features/</span>             <span class="comment">← feature activation</span>
+│   │   ├── <span class="dir">metrics/</span>              <span class="comment">← Kamon/InfluxDB</span>
+│   │   ├── <span class="dir">crypto/</span>               <span class="comment">← hashing, signing</span>
+│   │   ├── <span class="dir">utx/</span>                  <span class="comment">← unconfirmed TX pool</span>
+│   │   └── <span class="dir">core/</span>
+│   │       ├── <span class="dir">network/http/</span>     <span class="comment">← api key, marshallers</span>
+│   │       └── <span class="dir">storage/</span>          <span class="comment">← LevelDB, history</span>
+│   └── <span class="dir">scorex/</span>                   <span class="comment">← framework herdado</span>
+│       ├── <span class="dir">account/</span>              <span class="comment">← Address, Alias, Keys</span>
+│       ├── <span class="dir">api/http/</span>             <span class="comment">← REST routes</span>
+│       ├── <span class="dir">block/</span>                <span class="comment">← Block, MicroBlock</span>
+│       ├── <span class="dir">consensus/</span>            <span class="comment">← NXT consensus</span>
+│       ├── <span class="dir">network/message/</span>      <span class="comment">← wire protocol</span>
+│       ├── <span class="dir">serialization/</span>        <span class="comment">← bytes/JSON</span>
+│       ├── <span class="dir">wallet/</span>               <span class="comment">← Wallet</span>
+│       └── <span class="dir">utils/</span>                <span class="comment">← NTP, logging</span>
+├── <span class="dir">src/test/scala/</span>
+├── <span class="dir">project/</span>                      <span class="comment">← sbt build defs</span>
+├── <span class="dir">docker/</span>                       <span class="comment">← Dockerfile, compose</span>
+├── <span class="dir">.github/workflows/</span>            <span class="comment">← CI pipelines</span>
+├── build.sbt
+├── lunesnode.conf                   <span class="comment">← config minimo</span>
+└── application.conf                 <span class="comment">← config completo</span>
+      </div>
+    </section>
+
+    <section id="entrypoint">
+      <h2>Entrypoint</h2>
+      <p>O ponto de entrada e <code>io.lunes.LunesNode.main()</code> em <code>src/main/scala/io/lunes/LunesNode.scala</code>.</p>
+
+      <h3>Fluxo de inicializacao</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Passo</th><th>O que faz</th><th>Arquivo</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Corrige NTP, instala SLF4J bridge</td><td><code>LunesNode.main()</code></td></tr>
+            <tr><td>2</td><td>Le <code>lunesnode.conf</code> ou path do arg</td><td><code>readConfig()</code></td></tr>
+            <tr><td>3</td><td>Inicia Kamon + Metrics</td><td><code>Metrics.start()</code></td></tr>
+            <tr><td>4</td><td>Cria ActorSystem via <code>RootActorSystem</code></td><td><code>root/RootActorSystem.scala</code></td></tr>
+            <tr><td>5</td><td>Seta <code>AddressScheme</code> (chain ID)</td><td><code>scorex/account/AddressScheme.scala</code></td></tr>
+            <tr><td>6</td><td>Instancia <code>LunesNode</code> e chama <code>.run()</code></td><td><code>LunesNode.scala:582</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Dentro de <code>run()</code></h3>
+      <p>Valida genesis block, abre wallet, inicia UTX pool, cria Miner, configura appenders (Block, Checkpoint, Extension, Microblock), sobe rede P2P via <code>NetworkServer</code>, inicia REST API completa, e agenda mineracao.</p>
+    </section>
+
+    <section id="network">
+      <h2>Rede P2P</h2>
+      <p>Baseada em Netty. O node descobre peers, faz handshake, troca blocos, scores e transacoes via protocolo binario.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Responsabilidade</th></tr></thead>
+          <tbody>
+            <tr><td><code>NetworkServer.scala</code></td><td>Bootstrap do servidor Netty, aceita conexoes</td></tr>
+            <tr><td><code>Handshake.scala</code></td><td>Protocolo de handshake (app name, version, nonce)</td></tr>
+            <tr><td><code>HandshakeHandler.scala</code></td><td>Valida handshake, aceita/rejeita peer</td></tr>
+            <tr><td><code>PeerDatabase.scala</code></td><td>Armazena peers conhecidos e blacklist</td></tr>
+            <tr><td><code>RxExtensionLoader.scala</code></td><td>Carrega extensoes (forks) de peers via Rx</td></tr>
+            <tr><td><code>RxScoreObserver.scala</code></td><td>Observa scores de peers para sync</td></tr>
+            <tr><td><code>MicroBlockSynchronizer.scala</code></td><td>Sincroniza microblocks entre peers</td></tr>
+            <tr><td><code>UtxPoolSynchronizer.scala</code></td><td>Propaga transacoes nao confirmadas</td></tr>
+            <tr><td><code>HistoryReplier.scala</code></td><td>Responde a pedidos de blocos/signatures</td></tr>
+            <tr><td><code>UPnP.scala</code></td><td>Configuracao automatica de port forwarding</td></tr>
+            <tr><td><code>TrafficLogger.scala</code></td><td>Log de mensagens de rede (filtravel)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Portas padrao</h3>
+      <p>P2P: <code>5550</code> &bull; REST API: <code>5555</code></p>
+    </section>
+
+    <section id="consensus">
+      <h2>Consenso (NXT PoS)</h2>
+      <p>Usa NXT-like Proof of Stake com NG (Next-Generation) protocol para microblocks. O calculo de geracao esta em <code>PoSCalc.scala</code>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Responsabilidade</th></tr></thead>
+          <tbody>
+            <tr><td><code>PoSCalc.scala</code></td><td>Calculo de elegibilidade para gerar bloco</td></tr>
+            <tr><td><code>TransactionsOrdering.scala</code></td><td>Ordenacao de TXs dentro de um bloco</td></tr>
+            <tr><td><code>NxtConsensusBlockField.scala</code></td><td>Campo de consenso serializado no bloco</td></tr>
+            <tr><td><code>NxtLikeConsensusBlockData.scala</code></td><td>Base target + generation signature</td></tr>
+            <tr><td><code>Block.scala</code></td><td>Estrutura do bloco (header + TXs)</td></tr>
+            <tr><td><code>MicroBlock.scala</code></td><td>Microbloco do protocolo NG</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="transactions">
+      <h2>Transacoes</h2>
+      <p>Todas implementam o trait <code>Transaction</code>. Cada tipo tem seu ID numerico em <code>TransactionParser</code>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th>Classe</th><th>Descricao</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge">Genesis</span></td><td><code>GenesisTransaction</code></td><td>TX inicial da chain</td></tr>
+            <tr><td><span class="badge">Payment</span></td><td><code>PaymentTransaction</code></td><td>Transferencia simples de LUNES</td></tr>
+            <tr><td><span class="badge">Transfer</span></td><td><code>TransferTransaction</code></td><td>Transferencia com asset opcional</td></tr>
+            <tr><td><span class="badge">MassTransfer</span></td><td><code>MassTransferTransaction</code></td><td>Transferencia em lote</td></tr>
+            <tr><td><span class="badge">Issue</span></td><td><code>IssueTransaction</code></td><td>Emissao de novo token</td></tr>
+            <tr><td><span class="badge">Reissue</span></td><td><code>ReissueTransaction</code></td><td>Re-emissao de token</td></tr>
+            <tr><td><span class="badge">Burn</span></td><td><code>BurnTransaction</code></td><td>Queima de tokens</td></tr>
+            <tr><td><span class="badge green">Registry</span></td><td><code>RegistryTransaction</code></td><td>Registro de dados na chain</td></tr>
+            <tr><td><span class="badge">Exchange</span></td><td><code>ExchangeTransaction</code></td><td>Trade entre orders</td></tr>
+            <tr><td><span class="badge">Lease</span></td><td><code>LeaseTransaction</code></td><td>Lease de balance para staking</td></tr>
+            <tr><td><span class="badge">LeaseCancel</span></td><td><code>LeaseCancelTransaction</code></td><td>Cancela lease ativo</td></tr>
+            <tr><td><span class="badge">CreateAlias</span></td><td><code>CreateAliasTransaction</code></td><td>Alias legivel para endereco</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Validacao & Diffs</h3>
+      <p>Cada tipo tem seu diff em <code>state2/diffs/</code>. A validacao comum (timestamps, fees, signatures) esta em <code>CommonValidation.scala</code> e <code>Verifier.scala</code>.</p>
+    </section>
+
+    <section id="state">
+      <h2>State & Storage</h2>
+      <p>O state e gerenciado por <code>BlockchainUpdaterImpl</code> com suporte a NG (microblocks pendentes via <code>NgState</code>). Persistencia em LevelDB.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Componente</th><th>Arquivo</th><th>Papel</th></tr></thead>
+          <tbody>
+            <tr><td>Updater</td><td><code>BlockchainUpdaterImpl.scala</code></td><td>Orquestra append/rollback de blocos</td></tr>
+            <tr><td>State Reader</td><td><code>reader/StateReaderImpl.scala</code></td><td>Leitura de balances, assets, leases</td></tr>
+            <tr><td>Composite Reader</td><td><code>reader/CompositeStateReader.scala</code></td><td>Combina state persistido + diff pendente</td></tr>
+            <tr><td>Diff</td><td><code>Diff.scala</code></td><td>Delta de state (portfolios, aliases, assets)</td></tr>
+            <tr><td>Portfolio</td><td><code>Portfolio.scala</code></td><td>Balance + lease info + assets de uma conta</td></tr>
+            <tr><td>Storage</td><td><code>StateStorage.scala</code></td><td>Camada de acesso ao LevelDB</td></tr>
+            <tr><td>History</td><td><code>HistoryWriterImpl.scala</code></td><td>Persiste block headers e scores</td></tr>
+            <tr><td>LevelDB</td><td><code>core/storage/db/</code></td><td>Abstraccoes de storage (codecs, versioning)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Appenders</h3>
+      <p>Em <code>state2/appender/</code>: <code>BlockAppender</code>, <code>ExtensionAppender</code> (forks), <code>MicroblockAppender</code>, <code>CheckpointAppender</code>. Cada um valida e aplica diffs ao state.</p>
+    </section>
+
+    <section id="mining">
+      <h2>Mineracao</h2>
+      <p>Implementada em <code>mining/Miner.scala</code>. O miner agenda tentativas de gerar blocos baseado no PoS e, quando bem-sucedido, gera key blocks e microblocks.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
+          <tbody>
+            <tr><td><code>Miner.scala</code></td><td>Trait + <code>MinerImpl</code>: agenda e executa mineracao</td></tr>
+            <tr><td><code>MiningConstraint.scala</code></td><td>Limites de TXs por bloco/microbloco</td></tr>
+            <tr><td><code>Estimator.scala</code></td><td>Estimativa de tamanho de TX para constraints</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Parametros (config)</h3>
+      <pre>miner {
+  quorum = 1                           # conexoes minimas
+  micro-block-interval = 5s
+  max-transactions-in-key-block = 0    # key block vazio (NG)
+  max-transactions-in-micro-block = 255
+  min-micro-block-age = 6s
+}</pre>
+    </section>
+
+    <section id="security">
+      <h2>Seguranca</h2>
+      <p>O modulo <code>security/</code> mantem listas de enderecos banidos e assets congelados.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Funcao</th></tr></thead>
+          <tbody>
+            <tr><td><code>SecurityChecker.scala</code></td><td>Verifica enderecos banidos e assets congelados</td></tr>
+            <tr><td><code>BanAddress.scala</code></td><td>Modelo de endereco banido</td></tr>
+            <tr><td><code>BanAddressList.scala</code></td><td>Lista de enderecos banidos</td></tr>
+            <tr><td><code>FrozenAsset.scala</code></td><td>Modelo de asset congelado</td></tr>
+            <tr><td><code>FrozenAssetList.scala</code></td><td>Lista de assets congelados</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>O asset <strong>LUNES</strong> e protegido por padrao (frozen asset name essencial). Gitleaks esta configurado para scanning de secrets no CI.</p>
+    </section>
+
+    <section id="rest-api">
+      <h2>REST API</h2>
+      <p>Construida com Akka HTTP + Swagger. Bind padrao em <code>127.0.0.1:5555</code>. Autenticacao via header <code>X-API-Key</code> (hash armazenado em config).</p>
+
+      <pre>rest-api {
+  bind-address = "127.0.0.1"
+  port = 5555
+  api-key-hash = "3XyBSS9..."
+  cors = yes
+}</pre>
+
+      <p>Swagger UI embutido em <code>src/main/resources/swagger-ui/</code>.</p>
+    </section>
+
+    <section id="api-routes">
+      <h2>Rotas Disponiveis</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rota</th><th>Classe</th><th>Descricao</th></tr></thead>
+          <tbody>
+            <tr><td><code>/node/*</code></td><td><code>NodeApiRoute</code></td><td>Status e shutdown do node</td></tr>
+            <tr><td><code>/blocks/*</code></td><td><code>BlocksApiRoute</code></td><td>Consulta blocos por height/ID</td></tr>
+            <tr><td><code>/transactions/*</code></td><td><code>TransactionsApiRoute</code></td><td>Consulta e broadcast de TXs</td></tr>
+            <tr><td><code>/addresses/*</code></td><td><code>AddressApiRoute</code></td><td>Balances, scripts, validacao</td></tr>
+            <tr><td><code>/assets/*</code></td><td><code>AssetsApiRoute</code></td><td>Issue, transfer, burn, details</td></tr>
+            <tr><td><code>/assets/broadcast/*</code></td><td><code>AssetsBroadcastApiRoute</code></td><td>Broadcast de TXs de assets assinadas</td></tr>
+            <tr><td><code>/wallet/*</code></td><td><code>WalletApiRoute</code></td><td>Seed, addresses da wallet</td></tr>
+            <tr><td><code>/utils/*</code></td><td><code>UtilsApiRoute</code></td><td>Hash, seed, time utils</td></tr>
+            <tr><td><code>/peers/*</code></td><td><code>PeersApiRoute</code></td><td>Lista e conecta peers</td></tr>
+            <tr><td><code>/consensus/*</code></td><td><code>NxtConsensusApiRoute</code></td><td>Base target, generation signature</td></tr>
+            <tr><td><code>/leasing/*</code></td><td><code>LeaseApiRoute</code></td><td>Lease e lease cancel</td></tr>
+            <tr><td><code>/leasing/broadcast/*</code></td><td><code>LeaseBroadcastApiRoute</code></td><td>Broadcast de TXs de lease assinadas</td></tr>
+            <tr><td><code>/alias/*</code></td><td><code>AliasApiRoute</code></td><td>Cria e resolve aliases</td></tr>
+            <tr><td><code>/alias/broadcast/*</code></td><td><code>AliasBroadcastApiRoute</code></td><td>Broadcast de alias TX assinada</td></tr>
+            <tr><td><code>/activation/*</code></td><td><code>ActivationApiRoute</code></td><td>Status de features ativadas</td></tr>
+            <tr><td><code>/debug/*</code></td><td><code>DebugApiRoute</code></td><td>State, rollback, info de debug</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="config">
+      <h2>Configuracao</h2>
+      <p>Dois niveis de config: <code>lunesnode.conf</code> (minimo, usuario edita) e <code>application.conf</code> (completo, defaults do sistema).</p>
+
+      <h3>Config minimo (<code>lunesnode.conf</code>)</h3>
+      <pre>lunes {
+  directory = "./"
+  blockchain.type = ""         # MAINNET ou TESTNET
+  network.known-peers = [""]   # ip:port de um node
+  wallet.password = ""
+  wallet.seed = ""             # seed em BASE58
+}</pre>
+
+      <h3>Secoes do <code>application.conf</code></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Secao</th><th>O que configura</th></tr></thead>
+          <tbody>
+            <tr><td><code>lunes.network</code></td><td>Bind, porta, peers, blacklist, UPnP, traffic logger</td></tr>
+            <tr><td><code>lunes.wallet</code></td><td>Arquivo da wallet, password, seed</td></tr>
+            <tr><td><code>lunes.blockchain</code></td><td>Tipo de chain, genesis, functionality settings</td></tr>
+            <tr><td><code>lunes.checkpoints</code></td><td>Chave publica para verificacao de checkpoints</td></tr>
+            <tr><td><code>lunes.fees</code></td><td>Fees por tipo de transacao</td></tr>
+            <tr><td><code>lunes.matcher</code></td><td>DEX matcher (desabilitado por padrao)</td></tr>
+            <tr><td><code>lunes.miner</code></td><td>Quorum, intervalos, limites de TX</td></tr>
+            <tr><td><code>lunes.rest-api</code></td><td>Bind, porta, API key, CORS</td></tr>
+            <tr><td><code>lunes.synchronization</code></td><td>Rollback, timeouts, caches</td></tr>
+            <tr><td><code>lunes.utx</code></td><td>Pool size, TTL, blacklist de senders</td></tr>
+            <tr><td><code>lunes.features</code></td><td>Features suportadas, auto-shutdown</td></tr>
+            <tr><td><code>kamon / metrics</code></td><td>InfluxDB, metricas de sistema</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="networks">
+      <h2>Mainnet vs Testnet</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Param</th><th>Mainnet</th><th>Testnet</th></tr></thead>
+          <tbody>
+            <tr><td>Chain ID</td><td><code>'1'</code></td><td><code>'0'</code></td></tr>
+            <tr><td>Genesis timestamp</td><td><code>1528077600000</code></td><td><code>1528300800000</code></td></tr>
+            <tr><td>Average block delay</td><td>60s</td><td>60s</td></tr>
+            <tr><td>Genesis TXs</td><td>2 enderecos</td><td>4 enderecos</td></tr>
+            <tr><td>Feature check period</td><td>5000 blocos</td><td>3000 blocos</td></tr>
+            <tr><td>Feature activation</td><td>4000 blocos</td><td>2700 blocos</td></tr>
+            <tr><td>Double features after</td><td>Height 810000</td><td>Int.MaxValue</td></tr>
+            <tr><td>Known peer (default)</td><td><code>5.196.155.34:7770</code></td><td><code>5.196.155.46:7770</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="fees">
+      <h2>Tabela de Fees</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Transacao</th><th>Fee (LUNES units)</th><th>Fee (LUNES)</th></tr></thead>
+          <tbody>
+            <tr><td>Registry</td><td>100.000.000</td><td>1.0</td></tr>
+            <tr><td>Issue</td><td>100.000.000</td><td>1.0</td></tr>
+            <tr><td>Transfer</td><td>100.000</td><td>0.001</td></tr>
+            <tr><td>Mass Transfer (per item)</td><td>50.000</td><td>0.0005</td></tr>
+            <tr><td>Reissue</td><td>100.000</td><td>0.001</td></tr>
+            <tr><td>Burn</td><td>100.000</td><td>0.001</td></tr>
+            <tr><td>Exchange</td><td>300.000</td><td>0.003</td></tr>
+            <tr><td>Lease</td><td>100.000</td><td>0.001</td></tr>
+            <tr><td>Lease Cancel</td><td>100.000</td><td>0.001</td></tr>
+            <tr><td>Create Alias</td><td>100.000</td><td>0.001</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="docker">
+      <h2>Docker</h2>
+      <p>Compose com dois servicos: <code>master_node</code> (IP fixo <code>172.0.0.5</code>, porta 80→5555) e <code>node</code> (IP <code>172.0.0.10</code>, porta 81→5555). Rede customizada <code>172.0.0.0/16</code>.</p>
+
+      <pre># Subir a rede local
+docker-compose -f docker/docker-compose.yml up -d
+
+# Logs do master
+docker-compose -f docker/docker-compose.yml logs -f master_node</pre>
+
+      <h3>Arquivos</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
+          <tbody>
+            <tr><td><code>docker/Dockerfile</code></td><td>Build do JAR e imagem do node</td></tr>
+            <tr><td><code>docker/docker-compose.yml</code></td><td>Orquestracao master + node</td></tr>
+            <tr><td><code>docker/master.conf</code></td><td>Config do master node</td></tr>
+            <tr><td><code>docker/node.conf</code></td><td>Config do node seguidor</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ci">
+      <h2>CI/CD</h2>
+      <p>GitHub Actions com 3 workflows:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Workflow</th><th>Trigger</th><th>O que faz</th></tr></thead>
+          <tbody>
+            <tr><td><code>scala-compile.yml</code></td><td>push</td><td><code>sbt assembly</code> → upload do JAR como artifact</td></tr>
+            <tr><td><code>scala-test.yml</code></td><td>push</td><td><code>sbt test</code></td></tr>
+            <tr><td><code>gitleaks.yml</code></td><td>push</td><td>Scanning de secrets com Gitleaks</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Todos usam JDK 11 (Temurin).</p>
+    </section>
+
+    <section id="metrics">
+      <h2>Metricas</h2>
+      <p>Kamon para instrumentacao + InfluxDB para armazenamento. Desabilitado por padrao (<code>metrics.enable = no</code>).</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>O que mede</th></tr></thead>
+          <tbody>
+            <tr><td><code>Metrics.scala</code></td><td>Wrapper de escrita para InfluxDB</td></tr>
+            <tr><td><code>BlockStats.scala</code></td><td>Tempos de aplicacao e validacao de blocos</td></tr>
+            <tr><td><code>TxsInBlockchainStats.scala</code></td><td>Contagem de TXs na chain</td></tr>
+            <tr><td><code>LatencyHistogram.scala</code></td><td>Histograma de latencia</td></tr>
+            <tr><td><code>Instrumented.scala</code></td><td>Trait base para instrumentacao</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="build">
+      <h2>Build & Run</h2>
+
+      <h3>Pre-requisitos</h3>
+      <ul style="font-size:14px; padding-left:20px">
+        <li>JDK 11</li>
+        <li>sbt</li>
+      </ul>
+
+      <h3>Comandos</h3>
+      <pre># Compilar
+sbt compile
+
+# Testes
+sbt test
+
+# Gerar fat JAR
+sbt assembly
+# → target/scala-2.12/lunesnode-0.0.10.jar
+
+# Rodar
+sbt run
+
+# Rodar com config customizado
+java -jar target/scala-2.12/lunesnode-0.0.10.jar /path/to/lunesnode.conf
+
+# Build para rede especifica
+sbt -Dnetwork=testnet assembly
+sbt -Dnetwork=mainnet assembly</pre>
+    </section>
+
+    <section id="tests">
+      <h2>Testes</h2>
+      <p>Testes em <code>src/test/scala/</code>. Atualmente existem:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>O que testa</th></tr></thead>
+          <tbody>
+            <tr><td><code>SecurityCheckerSpec.scala</code></td><td>Ban list e frozen assets</td></tr>
+            <tr><td><code>HandshakeHandlerSpec.scala</code></td><td>Protocolo de handshake P2P</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre># Rodar todos os testes
+sbt test
+
+# Rodar teste especifico
+sbt "testOnly io.lunes.security.SecurityCheckerSpec"</pre>
+    </section>
+
+    <section id="contributing">
+      <h2>Contribuicao</h2>
+      <p>Veja <code>CONTRIBUTING.md</code> e <code>CODE_OF_CONDUCT.md</code>.</p>
+      <p>Contato: <strong>development@lunes.io</strong></p>
+      <p>Licenca: <strong>Apache License v2.0</strong></p>
+    </section>
+  </main>
+</div>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -80% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Close mobile nav on link click
+  navLinks.forEach(a => a.addEventListener('click', () => {
+    document.querySelector('nav').classList.remove('open');
+  }));
+</script>
